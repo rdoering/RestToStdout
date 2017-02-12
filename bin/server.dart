@@ -28,6 +28,8 @@ void main(List<String> args) {
 }
 
 shelf.Response _echoRequest(shelf.Request request) {
-  print(request.url);
+  print("${request.method} ${request.url}");
+  print("Host: ");
+  print("${request.headers}");
   return new shelf.Response.ok('Request for "${request.url}"');
 }
