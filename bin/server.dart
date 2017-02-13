@@ -19,7 +19,6 @@ void main(List<String> args) {
   });
 
   var handler = const shelf.Pipeline()
-      .addMiddleware(shelf.logRequests())
       .addHandler(_echoRequest);
 
   io.serve(handler, '0.0.0.0', port).then((server) {
@@ -27,9 +26,16 @@ void main(List<String> args) {
   });
 }
 
-shelf.Response _echoRequest(shelf.Request request) {
-  print("${request.method} ${request.url}");
+shelf.Response _echoRequest(shelf.Request request)  {
+  print("${request.method} /${request.url} HTTP/${request.protocolVersion}");
   print("Host: ");
-  print("${request.headers}");
+  request.headers.forEach((key, value){
+    print("$key: $value");
+  });
+  if(request.contentLength != null) {
+    request.readAsString().then(print);
+  }
+
+  print('');
   return new shelf.Response.ok('Request for "${request.url}"');
 }
